@@ -1,4 +1,3 @@
-import click
 import itertools
 
 
@@ -34,8 +33,10 @@ def heuristic(n, m, weights, values):
     total_value = 0
     total_weight = 0
     ratious = [value / weight for value, weight in zip(values, weights)]
-    for idx, ratio in sorted(enumerate(ratious), key=lambda x: x[1], reverse=True):
-        weight = weights[idx]
+    # sort according to value-weight ratio
+    # if the ratio is the same prefer the lighter item
+    for idx, (ratio, weight) in sorted(enumerate(zip(ratious, weights)),
+                             key=lambda x: (x[1][0], -x[1][1]), reverse=True):
         if total_weight + weight <= m:
             total_weight += weight
             total_value += values[idx]
@@ -52,7 +53,7 @@ def read_instances(f):
         data[items[0]] = {
                 'n': items[1],  # number of items
                 'm': items[2],  # capacity
-                'weights': items[3::2], # items weights
+                'weights': items[3::2],  # items weights
                 'values': items[4::2]  # items values
                 }
     return data
