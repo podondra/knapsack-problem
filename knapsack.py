@@ -3,7 +3,7 @@ import itertools
 
 
 def brute_force(n, m, weights, values):
-    best_xs = (0, ) * n
+    best_xs = [0, ] * n
     best_value = 0
     xss = itertools.product([0, 1], repeat=n)
     for xs in xss:
@@ -29,8 +29,18 @@ def brute_force_fn(n, m, weights, values):
             )
 
 
-def heuristic():
-    ...
+def heuristic(n, m, weights, values):
+    xs = [0, ] * n
+    total_value = 0
+    total_weight = 0
+    ratious = [value / weight for value, weight in zip(values, weights)]
+    for idx, ratio in sorted(enumerate(ratious), key=lambda x: x[1], reverse=True):
+        weight = weights[idx]
+        if total_weight + weight <= m:
+            total_weight += weight
+            total_value += values[idx]
+            xs[idx] = 1
+    return total_value, xs
 
 
 def read_instances(f):
@@ -46,17 +56,3 @@ def read_instances(f):
                 'values': items[4::2]  # items values
                 }
     return data
-
-
-@click.command()
-@click.argument('infile', type=click.File())
-def knapsack(infile):
-    instances = read_instances(infile)
-    for i, inst in instances.items():
-        solution = brute_force_fn(inst['n'], inst['m'],
-                inst['weights'], inst['values'])
-        print(i, inst['n'], solution[0], '', ' '.join(map(str, solution[2])))
-
-
-if __name__ == '__main__':
-    knapsack()
