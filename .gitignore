@@ -1,3 +1,8 @@
+reports/*.aux
+reports/*.out
+reports/*.pdf
+reports/*.tex
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
