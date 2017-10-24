@@ -12,3 +12,8 @@ subject to *w\_1 * x\_1 + w\_2 * x\_2 + ... + w\_n * x\_n <= W*
 
 Find a set of *X = {x_1, x_2, ..., x_n}*,
 where *x_i* is element of *{0, 1}*.
+
+## report build
+
+1. download the notebook as TeX
+2. use `pdflatex` to produce PDF
