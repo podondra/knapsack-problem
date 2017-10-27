@@ -17,4 +17,4 @@ where *x_i* is element of *{0, 1}*.
 
 1. download the notebook as TeX
 2. use `pdflatex` to produce PDF
-$  use `git archive -o <HW-NAME>.zip --prefix=<HW-NAME>/ HEAD`
+3.  use `git archive -o <HW-NAME>.zip --prefix=<HW-NAME>/ HEAD`
