@@ -2,7 +2,7 @@
 
 ## 0-1 Knapsack Problem
 
-Given whole number $n$ (number of things), whole number *M* (knapsack capacity),
+Given whole number *n* (number of things), whole number *M* (knapsack capacity),
 finite set *W = {w_1, w_2, ... , w_n}* (things' weights),
 finite set *C = {c_1, c_2, ... , c_n}* (things' price).
 Construct set *X = {x_1, x_2, ... , x_n}* where all *x_i in {0, 1}*,
