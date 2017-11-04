@@ -36,12 +36,36 @@ def heuristic(n, m, weights, values):
     # sort according to value-weight ratio
     # if the ratio is the same prefer the lighter item
     for idx, (ratio, weight) in sorted(enumerate(zip(ratious, weights)),
-                             key=lambda x: (x[1][0], -x[1][1]), reverse=True):
+                                       key=lambda x: (x[1][0], -x[1][1]),
+                                       reverse=True):
         if total_weight + weight <= m:
             total_weight += weight
             total_value += values[idx]
             xs[idx] = 1
     return total_value, xs
+
+
+def branch_and_bound(n, m, weights, values):
+    best_value = 0
+
+    def bb_recursive(value, n, m):
+        nonlocal best_value  # look in nearest enclosing scope
+        best_value = max(best_value, value)  # update best_value
+        # check if this branch can improve value more than best_value
+        if value + sum(values[:n]) <= best_value:
+            return 0
+        # base case
+        if n == 0 or m <= 0:
+            return 0
+        # cannot fit the thing into knapsack
+        if m < weights[n - 1]:
+            return bb_recursive(value, n - 1, m)
+        # try with and without the n - 1st thing
+        return max(values[n - 1] + bb_recursive(value + values[n - 1], n - 1,
+                                                m - weights[n - 1]),
+                   bb_recursive(value, n - 1, m))
+
+    return bb_recursive(0, n, m)
 
 
 def read_instances(f):
