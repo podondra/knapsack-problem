@@ -2,7 +2,7 @@ import itertools
 
 
 def brute_force(n, m, weights, values):
-    best_xs = [0, ] * n
+    best_xs = [0] * n
     best_value = 0
     xss = itertools.product([0, 1], repeat=n)
     for xs in xss:
@@ -29,7 +29,7 @@ def brute_force_fn(n, m, weights, values):
 
 
 def heuristic(n, m, weights, values):
-    xs = [0, ] * n
+    xs = [0 ] * n
     total_value = 0
     total_weight = 0
     ratious = [value / weight for value, weight in zip(values, weights)]
@@ -47,25 +47,31 @@ def heuristic(n, m, weights, values):
 
 def branch_and_bound(n, m, weights, values):
     best_value = 0
+    best_xs, xs = None, [0] * n
 
     def bb_recursive(value, n, m):
-        nonlocal best_value  # look in nearest enclosing scope
-        best_value = max(best_value, value)  # update best_value
+        nonlocal best_value, best_xs, xs
+
+        if best_value < value:
+            best_value = value
+            best_xs = xs[:]
+
         # check if this branch can improve value more than best_value
         if value + sum(values[:n]) <= best_value:
             return 0
-        # base case
+
         if n == 0 or m <= 0:
             return 0
-        # cannot fit the thing into knapsack
         if m < weights[n - 1]:
             return bb_recursive(value, n - 1, m)
-        # try with and without the n - 1st thing
-        return max(values[n - 1] + bb_recursive(value + values[n - 1], n - 1,
-                                                m - weights[n - 1]),
-                   bb_recursive(value, n - 1, m))
+        xs[n - 1] = 1
+        value_with = values[n - 1] + bb_recursive(value + values[n - 1], n - 1,
+                                                  m - weights[n - 1])
+        xs[n - 1] = 0
+        value_without = bb_recursive(value, n - 1, m)
+        return max(value_with, value_without)
 
-    return bb_recursive(0, n, m)
+    return bb_recursive(0, n, m), best_xs
 
 
 def read_instances(f):
