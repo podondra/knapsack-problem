@@ -1,4 +1,5 @@
 import itertools
+import numpy
 
 
 def brute_force(n, m, weights, values):
@@ -55,23 +56,48 @@ def branch_and_bound(n, m, weights, values):
         if best_value < value:
             best_value = value
             best_xs = xs[:]
-
         # check if this branch can improve value more than best_value
         if value + sum(values[:n]) <= best_value:
             return 0
-
         if n == 0 or m <= 0:
             return 0
         if m < weights[n - 1]:
             return bb_recursive(value, n - 1, m)
         xs[n - 1] = 1
-        value_with = values[n - 1] + bb_recursive(value + values[n - 1], n - 1,
-                                                  m - weights[n - 1])
+        value_with = values[n - 1] + bb_recursive(value + values[n - 1],
+                                                  n - 1, m - weights[n - 1])
         xs[n - 1] = 0
         value_without = bb_recursive(value, n - 1, m)
         return max(value_with, value_without)
 
     return bb_recursive(0, n, m), best_xs
+
+
+def dynamic_programming(n, m, weights, values):
+    # TODO implement forward phase
+    max_value = sum(values)
+    inf = numpy.iinfo(numpy.int32).max
+    W = numpy.full((n + 1, max_value + 2), inf, dtype=numpy.int32)
+    W[0, 0] = 0
+    for i in range(n):
+        for v in range(max_value + 1):
+            # W[-1] contains inf
+            W[i + 1, v] = min(W[i, v],
+                              W[i, max(-1, v - values[i])] + weights[i])
+
+    best_value = 0
+    for value, weight in enumerate(W[-1]):
+        if weight <= m and best_value < value:
+            best_value = value
+
+    best_xs = [0] * n
+    value = best_value
+    for i in range(n, -1, -1):
+        if W[i - 1, value] != W[i, value]:
+            value -= values[i - 1]
+            best_xs[i - 1] = 1
+
+    return best_value, best_xs
 
 
 def read_instances(f):
