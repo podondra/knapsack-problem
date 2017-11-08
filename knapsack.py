@@ -1,5 +1,5 @@
 import itertools
-import numpy
+import numpy  # TODO convert all to numpy
 
 
 def brute_force(n, m, weights, values):
@@ -98,6 +98,14 @@ def dynamic_programming(n, m, weights, values):
             best_xs[i - 1] = 1
 
     return best_value, best_xs
+
+
+def fptas(n, m, weights, values, relative_error):
+    max_value = max(values)
+    K = (relative_error * max_value) / n
+    new_values = [int(value // K) for value in values]
+    _, best_xs = dynamic_programming(n, m, weights, new_values)
+    return sum(value * x for value, x in zip(values, best_xs)), best_xs
 
 
 def read_instances(f):
