@@ -1,7 +1,7 @@
-reports/*.aux
-reports/*.out
-reports/*.pdf
-reports/*.tex
+*.aux
+*.out
+*.pdf
+*.tex
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
