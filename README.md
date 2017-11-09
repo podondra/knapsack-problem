@@ -13,6 +13,8 @@ and expression *c_1 x_1 + c_2 x_2 + ... + c_n x_n* is maximal for all such sets
 
 ## Report Build
 
-1. download the notebook as TeX
-2. use `pdflatex` to produce PDF
-3. use `git archive -o <HW-NAME>.zip --prefix=<HW-NAME>/ HEAD`
+Prefer `Makefile`.
+
+1. `jupyter nbconvert --to PDF --output <HW-NAME> \
+    --PDFExporter.exclude_code_cell=True <JUPYTER-NOTEBOOK>`
+2. use `git archive -o <HW-NAME>.zip --prefix=<HW-NAME>/ HEAD`

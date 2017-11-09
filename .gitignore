@@ -1,7 +1,5 @@
-*.aux
-*.out
-*.pdf
-*.tex
+podszond-report.pdf
+podszond-report.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
