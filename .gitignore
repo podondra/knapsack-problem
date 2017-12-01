@@ -1,5 +1,6 @@
 podszond-report.pdf
-podszond-report.zip
+*.zip
+knapgen
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
