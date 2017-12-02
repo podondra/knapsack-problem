@@ -98,21 +98,21 @@ static double farg(char opt, int argc, char* argv[]) {
     exit(0);
 }
 
-int main (int argc, char* argv[]) {
-    int    I    = argdf('I', argc, argv, 0);
-    int    n    = arg  ('n', argc, argv);
-    int    N    = arg  ('N', argc, argv);
-    double m    = farg ('m', argc, argv);
-    double ke   = farg ('k', argc, argv);
-    int    Wmax = arg  ('W', argc, argv);
-    int    Cmax = arg  ('C', argc, argv);
-    int    d    = targ ('d', argc, argv);
+int main(int argc, char* argv[]) {
+    int I = argdf('I', argc, argv, 0);
+    int n = arg('n', argc, argv);
+    int N = arg('N', argc, argv);
+    double m = farg('m', argc, argv);
+    double ke = farg('k', argc, argv);
+    int Wmax = arg('W', argc, argv);
+    int Cmax = arg('C', argc, argv);
+    int d = targ('d', argc, argv);
 
     long ttw, tw;
     int i, j;
     int M;
     int* weights = (int*)malloc(n * sizeof(int));
-    int* costs   = (int*)malloc(n * sizeof(int));
+    int* costs = (int*)malloc(n * sizeof(int));
 
     srandom(time(NULL));
     ttw = 0;
@@ -120,7 +120,7 @@ int main (int argc, char* argv[]) {
         tw = knapcore(weights, costs, n, Wmax, Cmax, ke, d);
         ttw += tw;
         M = m * tw;
-        printf("%d %d %d",I + j, n, M);
+        printf("%d %d %d", I + j, n, M);
         for (i = 0; i < n; i++)
             printf(" %d %d", weights[i], costs[i]);
         printf("\n");
