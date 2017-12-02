@@ -9,10 +9,10 @@ static int rngrandom(int low, int high) {
 }
 
 static int go(
-    int w,	/* weight, 1..wm */
-    int wm,	/* max weight */
-    double k,	/* exponent */
-    int dir	/* -1: more small, 1: more big things, 0: does not mattter */
+    int w,      /* weight, 1..wm */
+    int wm,     /* max weight */
+    double k,   /* exponent */
+    int dir     /* -1: more small, 1: more big things, 0: does not mattter */
 ) {
     double thr;
     switch (dir) {
@@ -26,19 +26,19 @@ static int go(
 
 /* returns total weight */
 int knapcore(
-	int* weights,
-	int* costs,
-	int  n,		/* total things # */
-	int  Wmax,	/* max generated weight */
-	int  Cmax,	/* max cost (min cost=1) */
-	double ke,	/* exponent */
-	int  d
+        int* weights,
+        int* costs,
+        int  n,         /* total things # */
+        int  Wmax,      /* max generated weight */
+        int  Cmax,      /* max cost (min cost=1) */
+        double ke,      /* exponent */
+        int  d
 ) {
     int* issued=(int*)malloc((Wmax + 1) * sizeof(int));
     int  k;
     long ttw, tw, w;
 
-    if (!issued) return 0;	/* indicates memory alloc failure */
+    if (!issued) return 0;      /* indicates memory alloc failure */
 
     for (k = 0; k < Wmax; k++) issued[k] = 0;
     tw = 0;
@@ -46,15 +46,15 @@ int knapcore(
     k = 0;
     while (k < n) {
         w = rngrandom(1, Wmax);
-	/* already have a thing with this weight */
-	if (issued[w] > 0) continue;
+        /* already have a thing with this weight */
+        if (issued[w] > 0) continue;
 
-	if (go(w, Wmax, ke, d)) {
-	    costs[k] = issued[w] = rngrandom(1, Cmax);
-	    weights[k] = w;
-	    tw += w;
-	    k++;
-	}
+        if (go(w, Wmax, ke, d)) {
+            costs[k] = issued[w] = rngrandom(1, Cmax);
+            weights[k] = w;
+            tw += w;
+            k++;
+        }
     }
     free(issued);
     return tw;
